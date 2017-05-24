@@ -20,18 +20,24 @@ listen_fd.listen(10)
 while True:
     all_read = ''
     conn, addr = listen_fd.accept()
-    print conn, addr
-    while "\r\n\r\n" not in all_read:
-        read_data = conn.recv(1)
-        all_read += read_data
-    url_context = all_read.split(" ")[1]
-    file_dir = '/home/ming/workspace/html' + url_context
-    if os.path.isfile(file_dir):
-        content_length = os.path.getsize(file_dir)
-        file_context = ''
-        with open(file_dir) as f:
-            file_context = f.read()
-        resp += str(content_length) + '\r\n\r\n' + file_context
+    pid = os.fork()
+    if pid !=0:
+        pass
     else:
-        resp = "HTTP/1.1 404 NOT Found\r\nContent-Length: 12\r\n\r\n<h1>404</h1>"
-    conn.send(resp)
+        print conn, addr
+        while "\r\n\r\n" not in all_read:
+            read_data = conn.recv(1)
+            all_read += read_data
+        url_context = all_read.split(" ")[1]
+        file_dir = '/home/ming/workspace/html' + url_context
+#        if url_context == '/lagou.jpg'
+        if os.path.isfile(file_dir):
+            content_length = os.path.getsize(file_dir)
+            file_context = ''
+            with open(file_dir) as f:
+                file_context = f.read()
+            resp += str(content_length) + '\r\n\r\n' + file_context
+        else:
+            resp = "HTTP/1.1 404 NOT Found\r\nContent-Length: 12\r\n\r\n<h1>404</h1>"
+        conn.send(resp)
+        conn.close()
