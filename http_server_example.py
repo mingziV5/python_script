@@ -1,8 +1,7 @@
 #!/usr/bin/python
 #coding:utf-8
 import socket
-import os
-
+import os,sys,signal
 """
 GET /index.html HTTP/1.1
 Host: www.example.com
@@ -17,6 +16,8 @@ listen_fd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 listen_fd.bind(('0.0.0.0',6666))
 #backlog
 listen_fd.listen(10)
+#把sigchld信号交给init去回收
+signal.signal(signal.SIGCHLD,signal.SIG_IGN)
 while True:
     all_read = ''
     conn, addr = listen_fd.accept()
@@ -41,3 +42,4 @@ while True:
             resp = "HTTP/1.1 404 NOT Found\r\nContent-Length: 12\r\n\r\n<h1>404</h1>"
         conn.send(resp)
         conn.close()
+        sys.exit(0)
