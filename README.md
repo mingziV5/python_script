@@ -10,4 +10,5 @@
 9.thread_queue_example_2.py 生产者将一个结束信号放入队列，消费者监听到这个信号之后将信号重新放入队列，结束自己  
 10.thread_queue_example_3.py生产者将数据放入queue，两个消费者来取判断数据类型符合条件的处理，不符合条件重新放回queue  
 11.thread_queue_ring.py 类似thread_queue_example_3.py 生命十个线程处理数据形成一个环  
-12.thread_pool.py python3的线程池例子  
+12.thread_pool.py python3的线程池例子 
+13.todo:改写http_server_threads.py,不用线程池，用accept接受之后开线程的方式去处理连接 
