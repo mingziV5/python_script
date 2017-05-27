@@ -12,5 +12,5 @@ thread_pool.py python3的线程池例子
 thread_queue_event_example.py 实例化一个event对象，可以让生产者监视消费者进程  
 thread_queue_example.py 线程间的通讯用queue队列实现，队列自身实现锁的功能  
 thread_queue_example_2.py 生产者将一个结束信号放入队列，消费者监听到这个信号之后将信号重新放入队列，结束自己  
-thread_queue_example_3.py生产者将数据放入queue，两个消费者来取判断数据类型符合条件的处理，不符合条件重新放回queue  
+thread_queue_example_3.py生产者将数据放入queue，两个消费者来取判断数据类型符合条件的处理，不符合条件重新放回queue  
 thread_queue_ring.py 类似thread_queue_example_3.py 生命十个线程处理数据形成一个环  
