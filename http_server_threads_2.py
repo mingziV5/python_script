@@ -44,13 +44,14 @@ listen_fd.listen(10)
 q = Queue()
 for i in range(2):
     t = Thread(target=producer)
+    #The entire Python program exits when no alive non-daemon threads are left
+    #在线程池中使用比较好
     t.daemon = True
     t.start()
 
 while True:
     if not q.empty():
         t = Thread(target=worker)
-        t.daemon = True
         t.start()
     else:
         pass

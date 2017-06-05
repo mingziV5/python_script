@@ -1,10 +1,20 @@
 #!/usr/bin/python
 #coding:utf-8
+'''
+1.accept
+2.read
+3.和上次read到的append
+4.判断是否读到\r\n
+5.如果没有读到继续等poll触发
+6.如果读到了，处理反转逻辑，删除EPOLLIN，注册EPOLLOUT
+7.删除EPOLLOUT，往外write,等write完了，close（）
+'''
 import select
 import socket
 
 listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM,0)
 listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
+listen_socket.setblocking(0)
 listen_socket.bind(('0.0.0.0',8888))
 listen_socket.listen(10)
 epoll_socket = select.epoll()
@@ -20,10 +30,11 @@ requests = {}
 while True:
     epoll_list = epoll_socket.poll()
     for fd, event in epoll_list:
-        print fd,event
+        #print fd,event
         if fd == listen_socket.fileno():
             conn,addr = listen_socket.accept()
             print conn,addr
+            conn.setblocking(0)
             epoll_socket.register(conn.fileno(), select.EPOLLIN)
             fd_socket[conn.fileno()] = conn
             requests[conn.fileno()] = ''

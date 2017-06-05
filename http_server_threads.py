@@ -39,6 +39,7 @@ def worker():
 listen_fd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
 listen_fd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 listen_fd.bind(('0.0.0.0',6666))
+#backlog nginx listen backlog 如果服务器卡住了，backlog会把连接hold住，没有响应
 listen_fd.listen(10)
 
 q = Queue()
